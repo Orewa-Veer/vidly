@@ -1,13 +1,15 @@
 import express from "express";
 import auth from "../middleware/auth.js";
 import admin from "../middleware/admin.js";
+import asyncMiddleware from "../middleware/async.js";
 import Joi from "joi";
 import { Genre, validateGen } from "../models/genre.js";
+
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  const result = getGenres();
-  result.then((result) => res.send(result));
+router.get("/", async (req, res) => {
+  const result = await Genre.find();
+  res.send(result);
 });
 router.get("/:id", async (req, res) => {
   const genre = await Genre.findById(req.params.id);
@@ -42,10 +44,6 @@ router.delete("/:id", async (req, res) => {
   res.send(genre);
 });
 
-async function getGenres() {
-  const result = await Genre.find();
-  return result;
-}
 async function createGenre(body) {
   const genre = new Genre({
     name: body,
