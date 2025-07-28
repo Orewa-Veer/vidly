@@ -8,9 +8,14 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   const error = validateUser(req.body);
-  if (error) return res.status(400).send(error);
-  let user = await User.findOne({ email: req.body.email });
-  if (user) return res.status(400).send("User with this email already exists");
+  if (error) return res.status(400).send("error is in validation", error);
+  let user = await User.findOne({
+    $or: [{ email: req.body.email }, { username: req.body.username }],
+  });
+  if (user)
+    return res
+      .status(400)
+      .send("User with this email or username already exists");
   user = new User({
     name: req.body.name,
     email: req.body.email,
