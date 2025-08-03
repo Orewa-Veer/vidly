@@ -6,3 +6,10 @@ Error: Error shown
     at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+[2025-08-03T10:56:48.930Z] [31merror[39m: uncaughtException: Fatal error: jwtPrivateKey is not defined. 
+Error: Fatal error: jwtPrivateKey is not defined. 
+    at default (file:///C:/Users/veerv/Desktop/Pheonix/Me/Mosh/vidly/startup/configLogic.js:5:11)
+    at file:///C:/Users/veerv/Desktop/Pheonix/Me/Mosh/vidly/index.js:6:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
