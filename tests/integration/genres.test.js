@@ -29,4 +29,17 @@ describe("/api/genres", () => {
       expect(res.body.some((g) => g.name === "genre1"));
     });
   });
+  describe("Get/:id", () => {
+    it("should return genre if correct id", async () => {
+      const genre = await Genre.collection.insertOne({ name: "genre1" });
+      const id = genre.insertedId;
+      const res = await request(app).get(`/api/genres/${id}`);
+      expect(res.status).toBe(200);
+    });
+    it("should return error if incorrect id", async () => {
+      const id = new mongoose.Types.ObjectId();
+      const res = await request(app).get(`/api/genres/${id}`);
+      expect(res.status).toBe(404);
+    });
+  });
 });
