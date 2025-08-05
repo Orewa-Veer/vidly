@@ -4,12 +4,13 @@ import admin from "../middleware/admin.js";
 import asyncMiddleware from "../middleware/async.js";
 import Joi from "joi";
 import { Genre, validateGen } from "../models/genre.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   const result = await Genre.find();
-  res.send(result);
+  return res.send(result);
 });
 router.get("/:id", async (req, res) => {
   const genre = await Genre.findById(req.params.id);
