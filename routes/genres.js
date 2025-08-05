@@ -1,10 +1,8 @@
 import express from "express";
-import auth from "../middleware/auth.js";
 import admin from "../middleware/admin.js";
-import asyncMiddleware from "../middleware/async.js";
-import Joi from "joi";
+import auth from "../middleware/auth.js";
+import { validateId } from "../middleware/validateId.js";
 import { Genre, validateGen } from "../models/genre.js";
-import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -12,7 +10,7 @@ router.get("/", async (req, res) => {
   const result = await Genre.find();
   return res.send(result);
 });
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateId, async (req, res) => {
   const genre = await Genre.findById(req.params.id);
   if (!genre) return res.status(404).send("No such genre exists");
   res.send(genre);
