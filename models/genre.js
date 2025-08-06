@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Joi from "joi";
 const genreSchema = new mongoose.Schema({
   name: { type: String, minlength: 3, maxlength: 50, required: true },
 });
