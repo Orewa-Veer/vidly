@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "../../app.js";
+import { User } from "../../models/register.js";
 import mongoose from "mongoose";
 import { Genre } from "../../models/genre.js";
 beforeAll(async () => {
@@ -40,6 +41,22 @@ describe("/api/genres", () => {
       const id = new mongoose.Types.ObjectId();
       const res = await request(app).get(`/api/genres/${id}`);
       expect(res.status).toBe(404);
+    });
+  });
+  describe("Post /", () => {
+    it("should return 401 if the client is not logges in ", async () => {
+      const res = await request(app)
+        .post("/api/genres")
+        .send({ name: "genre1" });
+      expect(res.status).toBe(401);
+    });
+    it("should return 400 if genre is less than 5 chars", async () => {
+      const token = new User().generateToken();
+      const res = await request(app)
+        .post("/api/genres")
+        .set("x-auth-token", token)
+        .send({ name: "gen" });
+      expect(res.status).toBe(400);
     });
   });
 });

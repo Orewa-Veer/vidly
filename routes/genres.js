@@ -16,7 +16,9 @@ router.get("/:id", validateId, async (req, res) => {
   res.send(genre);
 });
 // to add genres
-router.post("/", [auth, admin], async (req, res) => {
+router.post("/", auth, async (req, res) => {
+  const { error } = validateGen(req.body);
+  if (error) return res.status(400).json({ error: error.message });
   const result = new Genre(req.body);
   await result.save();
   res.send(result);
