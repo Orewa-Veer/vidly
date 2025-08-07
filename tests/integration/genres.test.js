@@ -16,6 +16,19 @@ afterAll(async () => {
 afterEach(async () => {
   await Genre.deleteMany({});
 });
+let token;
+let name;
+beforeEach(async () => {
+  token = new User().generateToken();
+  name = "genre1";
+});
+const ext = async () => {
+  const res = await request(app)
+    .post("/api/genres")
+    .set("x-auth-token", token)
+    .send({ name });
+  return res;
+};
 describe("/api/genres", () => {
   describe("Get/", () => {
     it("should return all genres", async () => {
@@ -45,18 +58,26 @@ describe("/api/genres", () => {
   });
   describe("Post /", () => {
     it("should return 401 if the client is not logges in ", async () => {
-      const res = await request(app)
-        .post("/api/genres")
-        .send({ name: "genre1" });
+      token = "";
+
+      const res = await ext();
       expect(res.status).toBe(401);
     });
     it("should return 400 if genre is less than 5 chars", async () => {
       const token = new User().generateToken();
-      const res = await request(app)
-        .post("/api/genres")
-        .set("x-auth-token", token)
-        .send({ name: "gen" });
+      name = "gen";
+      const res = await ext();
       expect(res.status).toBe(400);
+    });
+    it("should save the genre if it's valid", async () => {
+      const res = await ext();
+      const genre = await Genre.find({ name: "genre1" });
+      expect(genre).not.toBeNull();
+    });
+    it("should return the genre if it's valid", async () => {
+      const res = await ext();
+      expect(res.body).toHaveProperty("_id");
+      expect(res.body).toHaveProperty("name", "genre1");
     });
   });
 });
