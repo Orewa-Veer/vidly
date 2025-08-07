@@ -64,8 +64,12 @@ describe("/api/genres", () => {
       expect(res.status).toBe(401);
     });
     it("should return 400 if genre is less than 5 chars", async () => {
-      const token = new User().generateToken();
       name = "gen";
+      const res = await ext();
+      expect(res.status).toBe(400);
+    });
+    it("should return 400 if genre is more than 50 chars", async () => {
+      name = new Array(52).join("a");
       const res = await ext();
       expect(res.status).toBe(400);
     });
